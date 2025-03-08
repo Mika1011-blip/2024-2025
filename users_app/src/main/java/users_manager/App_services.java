@@ -6,22 +6,29 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class App_services {
-    public static void list_users(){
+    public static String list_users() {
         String query = "SELECT * FROM users";
-        
-        try (
-            Connection conn = Database_conn.connect();
-            PreparedStatement stmt = (conn != null) ? conn.prepareStatement(query) : null;
-            ResultSet rs = (stmt != null) ? stmt.executeQuery() : null
-        ) {
-            if (rs != null) {
-                while(rs.next()) {
-                    System.out.println(rs.getInt("id") + " " + rs.getString("name") + " " + rs.getString("email"));
-                }
+        StringBuilder usersList = new StringBuilder();
+
+        try (Connection conn = Database_conn.connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+
+                // ✅ Append user details, separated by \n
+                usersList.append(id).append(" - ").append(name).append(" (").append(email).append(")\n");
             }
-        } catch(SQLException e) {
+
+        } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
+            return "Error fetching users!";
         }
+
+        return usersList.toString(); // ✅ Return as a formatted String
     }
 
     public static void add_user(String input_name, String input_email){
