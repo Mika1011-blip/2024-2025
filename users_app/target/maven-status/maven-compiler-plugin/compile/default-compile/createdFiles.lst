@@ -1,0 +1,5 @@
+users_manager\App_services.class
+users_manager\Database_conn.class
+users_manager\App.class
+users_manager\App_interface.class
+users_manager\imports.class
