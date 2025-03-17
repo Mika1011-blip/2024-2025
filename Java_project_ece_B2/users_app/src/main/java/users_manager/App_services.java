@@ -5,31 +5,45 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class App_services {
-    public static String list_users() {
-        String query = "SELECT * FROM users";
-        StringBuilder usersList = new StringBuilder();
-
+    public static User getUserByEmail(String email) {
+        String query = "SELECT * FROM users WHERE email = ?";
         try (Connection conn = Database_conn.connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String email = rs.getString("email");
-
-                // ✅ Append user details, separated by \n
-                usersList.append(id).append(" - ").append(name).append(" (").append(email).append(")\n");
-            }
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-            return "Error fetching users!";
+             PreparedStatement stmt = conn.prepareStatement(query)){
+             stmt.setString(1, email);
+             ResultSet rs = stmt.executeQuery();
+             if(rs.next()){
+                 int id = rs.getInt("id");
+                 String name = rs.getString("name");
+                 String userEmail = rs.getString("email");
+                 return new User(id, name, userEmail);
+             }
+        } catch(SQLException e){
+             System.out.println("Error: " + e.getMessage());
         }
-
-        return usersList.toString(); // ✅ Return as a formatted String
+        return null;
     }
+
+    public static ObservableList<User> getAllUsers(){
+    ObservableList<User> users = FXCollections.observableArrayList();
+    String query = "SELECT * FROM users";
+    try (Connection conn = Database_conn.connect();
+         PreparedStatement stmt = conn.prepareStatement(query);
+         ResultSet rs = stmt.executeQuery()){
+        while(rs.next()){
+            int id = rs.getInt("id");
+            String name = rs.getString("name");
+            String email = rs.getString("email");
+            users.add(new User(id, name, email));
+        }
+    } catch(SQLException e){
+        System.out.println("Error: " + e.getMessage());
+    }
+    return users;
+}
 
     public static void add_user(String input_name, String input_email){
         String query = "INSERT INTO users (name, email) VALUES (?, ?)";

@@ -26,7 +26,7 @@ public class App_interface {
                 switch (choice) {
                     case 1:
                         System.out.println("📋 Listing users...");
-                        App_services.list_users();
+                        //App_services.list_users();
                         break;
                     case 2:
                         // Ensure valid name input
