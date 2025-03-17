@@ -1,7 +1,8 @@
-users_manager\App$2.class
 users_manager\App_services.class
+users_manager\AppController$1.class
 users_manager\App_interface.class
-users_manager\App$1.class
 users_manager\User.class
 users_manager\Database_conn.class
+users_manager\AppController$2.class
+users_manager\AppController.class
 users_manager\App.class
