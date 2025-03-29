@@ -122,5 +122,5 @@ for lien in produits_data:
 # 📌 Sauvegarde des données
 df = pd.DataFrame(detailed_data, columns=["Nom", "Marque", "Prix", "Lien", "Description", "Avis", "Nombre d'avis", "Couleurs Disponibles", "Disponibilité", "Image"])
 df.to_csv("decathlon_produits_details.csv", index=False)
-
+print(df)
 print("✅ Scraping terminé ! Données enregistrées dans 'decathlon_produits_details.csv'")
